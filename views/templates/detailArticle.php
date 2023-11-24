@@ -31,6 +31,10 @@
                 echo '  <div class="detailComment">';
                 echo '      <h3 class="info">Le ' . Utils::convertDateToFrenchFormat($comment->getDateCreation()) . ", " . Utils::format($comment->getPseudo()) . ' a écrit :</h3>';
                 echo '      <p class="content">' . Utils::format($comment->getContent()) . '</p>';
+                
+                // Affichage du bouton de suppression (toujours visible)
+                echo '      <a class="deleteComment" href="index.php?action=deleteComment&id=' . $comment->getId() . '&idArticle=' . $article->getId() . '" ' . Utils::askConfirmation("Êtes-vous sûr de vouloir supprimer ce commentaire ?") . '>Supprimer</a>';
+                
                 echo '  </div>';
                 echo '</li>';
             }               
@@ -55,3 +59,23 @@
         </div>
     </form>
 </div>
+
+<style>
+/* Style pour le bouton de suppression des commentaires */
+.deleteComment {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    background-color: var(--titleColor);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.deleteComment:hover {
+    background-color: var(--commentColor);
+}
+</style>

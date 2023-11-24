@@ -18,4 +18,33 @@
     <?php } ?>
 </div>
 
-<a class="submit" href="index.php?action=showUpdateArticleForm">Ajouter un article</a>
+<div class="adminActions">
+    <a class="submit" href="index.php?action=showUpdateArticleForm">Ajouter un article</a>
+    <a class="submit" href="index.php?action=stats">Voir les statistiques</a>
+</div>
+
+<style>
+.adminActions {
+    margin-top: 20px;
+}
+
+.adminActions .submit {
+    margin-right: 10px;
+}
+
+.adminArticle {
+    margin-bottom: 20px;
+    background-color: var(--headerColor); /* Orange au lieu de vert */
+    color: white;
+}
+
+.adminActions .adminButton {
+    margin-right: 10px;
+    background-color: var(--headerColor); /* Orange au lieu de vert foncé */
+}
+
+.adminActions .adminButton:hover {
+    background-color: var(--titleColor); /* Rouge au survol */
+}
+
+</style>

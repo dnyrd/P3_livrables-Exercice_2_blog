@@ -37,11 +37,21 @@ try {
             $commentController->addComment();
             break;
 
+        case 'deleteComment':
+            $commentController = new CommentController();
+            $commentController->deleteComment();
+            break;
+
 
         // Section admin & connexion. 
         case 'admin': 
             $adminController = new AdminController();
             $adminController->showAdmin();
+            break;
+
+        case 'stats':
+            $adminController = new AdminController();
+            $adminController->showStats();
             break;
 
         case 'connectionForm':

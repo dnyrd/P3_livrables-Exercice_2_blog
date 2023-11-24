@@ -20,6 +20,7 @@
 <body>
     <header>
         <nav>
+            <a href="index.php?action=stats">Administration</a>
             <a href="index.php">Articles</a>
             <a href="index.php?action=apropos">À propos</a>
             <?php 

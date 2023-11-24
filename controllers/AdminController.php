@@ -11,9 +11,6 @@ class AdminController {
      */
     public function showAdmin() : void
     {
-        // On vérifie que l'utilisateur est connecté.
-        $this->checkIfUserIsConnected();
-
         // On récupère les articles.
         $articleManager = new ArticleManager();
         $articles = $articleManager->getAllArticles();
@@ -26,15 +23,20 @@ class AdminController {
     }
 
     /**
-     * Vérifie que l'utilisateur est connecté.
+     * Affiche la page des statistiques des articles.
      * @return void
      */
-    private function checkIfUserIsConnected() : void
+    public function showStats() : void
     {
-        // On vérifie que l'utilisateur est connecté.
-        if (!isset($_SESSION['user'])) {
-            Utils::redirect("connectionForm");
-        }
+        // On récupère les statistiques des articles.
+        $articleManager = new ArticleManager();
+        $stats = $articleManager->getArticlesStats();
+
+        // On affiche la page des statistiques.
+        $view = new View("Statistiques des articles");
+        $view->render("stats", [
+            'stats' => $stats
+        ]);
     }
 
     /**
@@ -102,8 +104,6 @@ class AdminController {
      */
     public function showUpdateArticleForm() : void 
     {
-        $this->checkIfUserIsConnected();
-
         // On récupère l'id de l'article s'il existe.
         $id = Utils::request("id", -1);
 
@@ -130,8 +130,6 @@ class AdminController {
      */
     public function updateArticle() : void 
     {
-        $this->checkIfUserIsConnected();
-
         // On récupère les données du formulaire.
         $id = Utils::request("id", -1);
         $title = Utils::request("title");
@@ -142,12 +140,15 @@ class AdminController {
             throw new Exception("Tous les champs sont obligatoires. 2");
         }
 
+        // Pour les nouveaux articles, on utilise un id_user par défaut (1 = Emilie)
+        $idUser = isset($_SESSION['idUser']) ? $_SESSION['idUser'] : 1;
+
         // On crée l'objet Article.
         $article = new Article([
             'id' => $id, // Si l'id vaut -1, l'article sera ajouté. Sinon, il sera modifié.
             'title' => $title,
             'content' => $content,
-            'id_user' => $_SESSION['idUser']
+            'id_user' => $idUser
         ]);
 
         // On ajoute l'article.
@@ -165,8 +166,6 @@ class AdminController {
      */
     public function deleteArticle() : void
     {
-        $this->checkIfUserIsConnected();
-
         $id = Utils::request("id", -1);
 
         // On supprime l'article.

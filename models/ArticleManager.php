@@ -38,6 +38,32 @@ class ArticleManager extends AbstractEntityManager
     }
 
     /**
+     * Récupère les statistiques de tous les articles (titre, vues, nombre de commentaires, date).
+     * @return array : un tableau associatif contenant les stats de chaque article.
+     */
+    public function getArticlesStats() : array
+    {
+        $sql = "SELECT 
+                    a.id,
+                    a.title,
+                    a.views,
+                    a.date_creation,
+                    COUNT(c.id) as comment_count
+                FROM article a
+                LEFT JOIN comment c ON a.id = c.id_article
+                GROUP BY a.id
+                ORDER BY a.date_creation DESC";
+        
+        $result = $this->db->query($sql);
+        $stats = [];
+
+        while ($stat = $result->fetch()) {
+            $stats[] = $stat;
+        }
+        return $stats;
+    }
+
+    /**
      * Ajoute ou modifie un article.
      * On sait si l'article est un nouvel article car son id sera -1.
      * @param Article $article : l'article à ajouter ou modifier.
@@ -52,6 +78,21 @@ class ArticleManager extends AbstractEntityManager
         }
     }
 
+
+    /**
+     * MAJ du nombres de views des articles.
+  
+     * @param Article $article : l'article à mettre à jour.
+     * @return void
+     */
+    public function updateViewArticle(int $id) : void 
+    {
+        $sql = "UPDATE article SET views = views + 1 WHERE id = :id";
+        $this->db->query($sql, 
+        ['id' => $id]
+        );
+    }
+    
     /**
      * Ajoute un article.
      * @param Article $article : l'article à ajouter.
